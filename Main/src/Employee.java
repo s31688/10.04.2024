@@ -28,36 +28,68 @@ public abstract class Employee {
 
 class Developer extends Employee {
     public ArrayList<Technology> technologies = new ArrayList<>();
+
     public Developer(String name, String surname, String address, String email, String id, int employmentYear) {
         super(name, surname, address, email, id, employmentYear);
     }
 
     public void addTechnology(Technology t) {
-        super.salary += t.bonus;
         this.technologies.add(t);
+    }
+
+    @Override
+    public int calculateSalary() {
+        super.salary = super.calculateSalary();
+        for (Technology technology : this.technologies) {
+            super.salary += technology.bonus;
+        }
+        return salary;
     }
 }
 
 class Tester extends Employee {
     public ArrayList<String> tests = new ArrayList<>();
+
     public Tester(String name, String surname, String address, String email, String id, int employmentYear) {
         super(name, surname, address, email, id, employmentYear);
     }
 
     public void addTestType(String name) {
         this.tests.add(name);
-        super.salary += 300;
+    }
+
+    @Override
+    public int calculateSalary() {
+        super.salary = super.calculateSalary();
+        for (String test : this.tests) {
+            super.salary += test.length() * 300;
+        }
+        return salary;
     }
 }
 
 class Manager extends Employee {
+    public ArrayList<Goal> goals = new ArrayList<>();
+
     public Manager(String name, String surname, String address, String email, String id, int employmentYear) {
         super(name, surname, address, email, id, employmentYear);
     }
 
     public void addGoals(Goal g) {
-        if(g.month == LocalDate.now().getMonthValue()) {
+        this.goals.add(g);
+        if (g.month == LocalDate.now().getMonthValue()) {
             super.salary += g.bonus;
         }
+    }
+
+    @Override
+    public int calculateSalary() {
+        super.salary = super.calculateSalary();
+        for (Goal g : this.goals) {
+            if (g.month == LocalDate.now().getMonthValue()) {
+                super.salary += g.bonus;
+            }
+        }
+        return salary;
     }
 }
